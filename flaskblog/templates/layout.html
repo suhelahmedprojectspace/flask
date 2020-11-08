@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <style>
+
+        .animated-icon2{
+            width: 30px;
+            height: 20px;
+            position: relative;
+            margin: 0px;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+            -webkit-transition: .5s ease-in-out;
+            -moz-transition: .5s ease-in-out;
+            -o-transition: .5s ease-in-out;
+            transition: .5s ease-in-out;
+            cursor: pointer;
+
+        }
+        .animated-icon2 span{
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+            -webkit-transition: .25s ease-in-out;
+            -moz-transition: .25s ease-in-out;
+            -o-transition: .25s ease-in-out;
+            transition: .25s ease-in-out;
+}
+        .animated-icon2 span{
+            background: #f3e5f5;
+
+        }
+        .animated-icon2 span:nth-child(1) {
+            top: 0px;
+}
+
+        .animated-icon2 span:nth-child(2), .animated-icon2 span:nth-child(3) {
+                top: 10px;
+    }
+
+        .animated-icon2 span:nth-child(4) {
+             top: 20px;
+}
+
+        .animated-icon2.open span:nth-child(1) {
+            top: 11px;
+            width: 0%;
+            left: 50%;
+}
+
+        .animated-icon2.open span:nth-child(2) {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+}
+
+        .animated-icon2.open span:nth-child(3) {
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+}
+
+    .animated-icon2.open span:nth-child(4) {
+        top: 11px;
+        width: 0%;
+        left: 50%;
+}
+</style>
+
+    <!-- Latest compiled and minified JavaScript -->
+    {% if title %}
+        <title>Flask Blog - {{ title }}</title>
+    {% else %}
+        <title>Abdu Diary</title>
+    {% endif %}
+</head>
+<body style="background:white;">
+    <header  class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark  fixed-top" style="background-color:#238BF9;">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/" style="letter-spacing:2px;  font-family:Times, serif; font-weight:400;">Abdu Diary</a>
+          <button class="navbar-toggler second-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent23" aria-controls="navbarSupportedContent23" aria-expanded="false" aria-label="Toggle navigation">
+              <div class="animated-icon2"><span></span><span></span><span></span><span></span></div>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent23">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('home') }}" style="color:white; letter-spacing:1px;">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('about') }}" style="color:white; letter-spacing:1px;">About</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('new_post') }}" style="color:white;letter-spacing:1px;">New Post</a>
+                <a class="nav-item nav-link" href="{{ url_for('account') }}"style="color:white;letter-spacing:1px;">Account</a>
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}"style="color:white;letter-spacing:1px;">Logout</a>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('login') }}"style="color:white;letter-spacing:1px;">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('register') }}"style="color:white;letter-spacing:1px;">Register</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+          <div class="card weather-card">
+              <div class="card-body pd-3">
+                  <h4 class="card-title font-weight-bold text-center">Day Order</h4>
+                  <p class="card-text" id="myId"></p>
+                  <div class="d-flex justify-content-between">
+                      <p class="display-1 degree"></p>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </main>
+<script>
+    var arrayofweekdays 
+
+    $(document).ready(function () {
+
+  $('.first-button').on('click', function () {
+
+    $('.animated-icon1').toggleClass('open');
+  });
+  $('.second-button').on('click', function () {
+
+    $('.animated-icon2').toggleClass('open');
+  });
+  $('.third-button').on('click', function () {
+
+    $('.animated-icon3').toggleClass('open');
+  });
+});
+</script>
+</body>
+</html>
